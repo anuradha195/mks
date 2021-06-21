@@ -1,0 +1,30 @@
+#corp_www - contains GD library
+
+FROM php:7.1-fpm-alpine
+
+RUN apk add --no-cache \
+    autoconf \
+    automake \
+    bash \
+    gcc \
+    g++ \
+    libc6-compat \
+    libjpeg-turbo-dev \
+    libc-dev \
+    libpng-dev \
+    make \
+    nasm \
+    git \
+    curl \
+    openssl \
+    openssh \
+    zip \
+    libzip-dev
+
+RUN docker-php-ext-configure zip --with-libzip
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install gd
+
+## Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && chmod +x /usr/local/bin/composer
+RUN export PATH=$PATH":/usr/bin"
